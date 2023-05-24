@@ -1,8 +1,9 @@
 import _ from 'lodash'
 
 class DataManager {
-  constructor () {
-    this.dataset = _.range(7).map(() => _.range(0, 10).map((i) => this._createDatapoint(i)))
+  constructor ({ groups }) {
+    this.groups = groups
+    this.dataset = _.range(this.groups).map(() => _.range(0, 10).map((i) => this._createDatapoint(i)))
   }
 
   _createDatapoint (index) {

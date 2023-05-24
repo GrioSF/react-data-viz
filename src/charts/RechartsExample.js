@@ -17,8 +17,6 @@ const convertData = (d) => {
     })
   })
 
-  console.log(convertedData)
-
   return convertedData
 }
 
@@ -31,13 +29,13 @@ export default function RechartsExample ({ data }) {
         data={convertData(data)}
       >
         <YAxis />
-        <Area type='monotone' dataKey='g1' stackId='1' stroke='#8884d8' fill='#8884d8' />
-        <Area type='monotone' dataKey='g2' stackId='1' stroke='#82ca9d' fill='#82ca9d' />
-        <Area type='monotone' dataKey='g3' stackId='1' stroke='#ffc658' fill='#ffc658' />
-        <Area type='monotone' dataKey='g4' stackId='1' stroke='red' fill='red' />
-        <Area type='monotone' dataKey='g5' stackId='1' stroke='blue' fill='blue' />
-        <Area type='monotone' dataKey='g6' stackId='1' stroke='green' fill='green' />
-        <Area type='monotone' dataKey='g7' stackId='1' stroke='tomato' fill='tomato' />
+        {
+          _.first(data).map((g, i) => {
+            return (
+              <Area key={`g${i + 1}`} type='monotone' dataKey={`g${i + 1}`} stackId='1' />
+            )
+          })
+        }
       </AreaChart>
     </ResponsiveContainer>
   )
