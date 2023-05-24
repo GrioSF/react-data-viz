@@ -9,36 +9,36 @@ function createDataPoint (x) {
   return { x, y: _.random(1, 15) }
 }
 
+const initialDataGroup = _.range(7).map(() => _.range(0, 10).map(x => ({ x, y: _.random(1, 15) })))
 let timeout;
 function App() {
-  const initialDatapoints = _.range(7).map(() => _.range(0, 10).map(x => ({ x, y: _.random(1, 15) })))
-  const [dataPoints, setDataPoints] = useState(initialDatapoints);
+  const [data, setData] = useState(initialDataGroup);
 
-  const updateDataPoints = (dp) => {
-    const lastPoint = _.last(_.first(dp)).x
-    const updatedDataPoints = dp.map((g) => {
-      return [...g.slice(1), createDataPoint(lastPoint + 1)];
+  const updateData = (d) => {
+    const lastPoint = _.last(_.first(d)).x
+    const updatedData = d.map((group) => {
+      return [...group.slice(1), createDataPoint(lastPoint + 1)];
     })
 
     timeout = null;
-    setDataPoints(updatedDataPoints);
+    setData(updatedData);
   }
 
   useEffect(() => {
     if (timeout) return;
-    timeout = setTimeout(() => updateDataPoints(dataPoints), 1000)
-  }, [dataPoints])
+    timeout = setTimeout(() => updateData(data), 1000)
+  }, [data])
 
-  const convertToRechartPoints = (dp) => {
-    const convertedData = _.first(dp).map(dataPoint => ({
-      name: `${dataPoint.x}`
+  const convertToRechartPoints = (d) => {
+    const convertedData = _.first(d).map(group => ({
+      name: `${group.x}`
     }))
 
-    dp.forEach((g, i) => {
-      g.forEach(({ x, y}) => {
+    d.forEach((group, i) => {
+      group.forEach(({ x, y}) => {
         const name = `g${i + 1}`
-        const convertedGraph = convertedData.find(d => d.name === `${x}`);
-        convertedGraph[name] = y;
+        const convertedGroup = convertedData.find(d => d.name === `${x}`);
+        convertedGroup[name] = y;
       })
     })
 
@@ -53,13 +53,13 @@ function App() {
     <div className="App">
       <div className="charts">
         <div className="chart">
-          <VictoryExample data={dataPoints} />
+          <VictoryExample data={data} />
         </div>
         <div className="chart">
-          <RechartsExample data={convertToRechartPoints(dataPoints)} />
+          <RechartsExample data={convertToRechartPoints(data)} />
         </div>
         <div className="chart nivo">
-          <NivoStreamExample data={convertToNivoStreamChartPoints(dataPoints)} />
+          <NivoStreamExample data={convertToNivoStreamChartPoints(data)} />
         </div>      
       </div>      
     </div>
