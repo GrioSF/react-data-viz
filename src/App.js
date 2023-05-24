@@ -17,13 +17,15 @@ import RechartsExample from './charts/RechartsExample'
 import VictoryExample from './charts/VictoryExample'
 import './App.css'
 
-let dataManager = new DataManager({ groups: 7 })
+let dataManager = new DataManager({ groups: 7, numberOfPoints: 10 })
 let timeout
 function App () {
   const [data, setData] = useState(dataManager.dataset)
   const [numberOfGroups, setNumberOfGroups] = useState(dataManager.groups)
+  const [numberOfPoints, setNumberOfPoints] = useState(dataManager.numberOfPoints)
   const [interval, setInterval] = useState(1000)
   const [dirtyNumberOfGroups, setDirtyNumberOfGroups] = useState(dataManager.groups)
+  const [dirtyNumberOfPoints, setDirtyNumberOfPoints] = useState(dataManager.numberOfPoints)
   const [dirtyInterval, setDirtyInterval] = useState(1000)
 
   const updateData = () => {
@@ -39,12 +41,16 @@ function App () {
   }, [data, interval])
 
   useEffect(() => {
-    dataManager = new DataManager({ groups: numberOfGroups })
+    dataManager = new DataManager({ groups: numberOfGroups, numberOfPoints })
     setData(dataManager.dataset)
-  }, [numberOfGroups])
+  }, [numberOfGroups, numberOfPoints])
 
   const handleGroupChange = e => {
     setDirtyNumberOfGroups(e.target.value)
+  }
+
+  const handleNumberOfPointsChange = e => {
+    setDirtyNumberOfPoints(e.target.value)
   }
 
   const handleIntervalChange = e => {
@@ -54,6 +60,7 @@ function App () {
   const handleUpdateClick = () => {
     setNumberOfGroups(parseInt(dirtyNumberOfGroups))
     setInterval(parseInt(dirtyInterval))
+    setNumberOfPoints(dirtyNumberOfPoints)
   }
 
   return (
@@ -70,6 +77,10 @@ function App () {
                 <HStack>
                   <FormLabel>Interval</FormLabel>
                   <Input value={dirtyInterval} size='sm' w='100' onChange={(e) => handleIntervalChange(e)} />
+                </HStack>
+                <HStack>
+                  <FormLabel>Number of points</FormLabel>
+                  <Input value={dirtyNumberOfPoints} size='sm' w='100' onChange={(e) => handleNumberOfPointsChange(e)} />
                 </HStack>
                 <Button onClick={() => handleUpdateClick()}>Update</Button>
               </HStack>

@@ -1,9 +1,10 @@
 import _ from 'lodash'
 
 class DataManager {
-  constructor ({ groups }) {
+  constructor ({ groups, numberOfPoints }) {
     this.groups = groups
-    this.dataset = _.range(this.groups).map(() => _.range(0, 10).map((i) => this._createDatapoint(i)))
+    this.numberOfPoints = numberOfPoints
+    this.dataset = _.range(this.groups).map(() => _.range(0, this.numberOfPoints).map((i) => this._createDatapoint(i)))
   }
 
   _createDatapoint (index) {
@@ -23,7 +24,7 @@ class DataManager {
 
   getLatest () {
     return this.dataset.map((group) => {
-      return group.slice(group.length - 10)
+      return group.slice(group.length - this.numberOfPoints)
     })
   }
 }
