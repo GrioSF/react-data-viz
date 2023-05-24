@@ -45,5 +45,8 @@
   },
   "devDependencies": {
     "standard": "^17.0.0"
-  }
+  },
+  "standard": {
+    "env": [ "jest" ]
+  }  
 }
